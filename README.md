@@ -4,7 +4,8 @@ springBoot2,websocket,Protobuf,LayIM,thymeleaf 等构建的实时通讯项目.
 * 单聊，群聊
 * LayIm实时通讯
 开发这可以先通简单的单聊开始，配合doc目录下的**X-IM及时通信项目开发文档-version1.0.docx**
-快速了解X-IM的项目的数据流程。熟悉整个流程后，读者可以根据自己的业务需求快速完成自己的实时通信!
+快速了解X-IM的项目的数据流程。熟悉整个流程后，读者可以根据自己的业务需求快速完成自己的实时通信!<br/>
+
 ##技术栈
 * springBoot2.0.3
 * netty4.0
@@ -12,7 +13,7 @@ springBoot2,websocket,Protobuf,LayIM,thymeleaf 等构建的实时通讯项目.
 * mybatis
 * thymeleaf
 ## 项目截图
-+ 1 index.html页面
++ 1 index.html页面<br/>
   ![我是图片](image/index.png)
 + 2 单聊页面（chat.html）<br/>
   在chrome和360流量器中分别打开 **http://localhost:8090/chat** 
