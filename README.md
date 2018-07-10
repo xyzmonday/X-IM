@@ -38,6 +38,9 @@ springBoot2,websocket,Protobuf,LayIM,thymeleaf 等构建的实时通讯项目.
   
   ![周八-离线](image/layim-zhouba-offline.png)
   ![张三-离线](image/layim-zhansan-offline.png)
+ 
+ ## 后期完善
+   添加Spring Security OAuth2,完善用户管理模块。
   
    
 
