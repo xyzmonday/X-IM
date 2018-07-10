@@ -14,7 +14,7 @@ springBoot2,websocket,Protobuf,LayIM,thymeleaf 等构建的即时通讯项目。
 * mybatis
 * thymeleaf
 ## 项目截图
-+ 1 index.html页面<br/><br/>
++ 1 首页（index.html）<br/><br/>
 
   ![我是图片](image/index.png)
 + 2 单聊页面（chat.html）<br/>
