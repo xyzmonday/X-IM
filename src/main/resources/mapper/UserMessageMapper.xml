@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yff.xim.module.user.mapper.UserMessageMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.yff.xim.model.UserMessageEntity" id="userMessageMap">
+        <result property="id" column="id"/>
+        <result property="senduser" column="senduser"/>
+        <result property="receiveuser" column="receiveuser"/>
+        <result property="groupid" column="groupid"/>
+        <result property="isread" column="isread"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+        <result property="createuser" column="createuser"/>
+        <result property="createdate" column="createdate"/>
+        <result property="updatedate" column="updatedate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+  	  	         id     ,  	        
+  	  	         senduser     ,  	        
+  	  	         receiveuser     ,  	        
+  	  	         groupid     ,  	        
+  	  	         isread     ,  	        
+  	  	         type     ,  	        
+  	  	         content     ,  	        
+  	  	         createuser     ,  	        
+  	  	         createdate     ,  	        
+  	  	         updatedate      	        
+  	  
+  </sql>
+
+
+    <select id="getHistoryMessageList" resultType="com.yff.xim.model.UserMessageEntity">
+        SELECT
+        a.id,
+        a.senduser,
+        b.name sendusername ,
+        ifnull(b.profilephoto,'layui/images/0.jpg') avatar,
+        a.content,
+        a.createuser,
+        a.createdate,
+        a.updatedate
+        FROM user_message a
+        LEFT JOIN user_info b ON b.uid=a.senduser
+        where (a.senduser =#{senduser} AND a.receiveuser =#{receiveuser} ) OR (a.senduser =#{receiveuser} AND
+        a.receiveuser =#{senduser} ) ORDER BY id DESC
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="getHistoryMessageCount" resultType="int">
+		   select  count(1)
+		   from  user_message  a
+		   where (a.senduser =#{senduser} AND a.receiveuser =#{receiveuser} )  OR  (a.senduser =#{receiveuser} AND a.receiveuser =#{senduser}  )
+	</select>
+
+    <select id="getOfflineMessageList" resultType="com.yff.xim.model.UserMessageEntity">
+		     SELECT
+			  a.id,
+			  a.senduser,
+			  b.name sendusername , 
+			  IFNULL(b.profilephoto,'../static/layui/images/0.jpg') avatar,
+			  a.content,
+			  a.createuser,
+			  a.createdate,
+			  a.updatedate
+			FROM  user_message  a 
+			LEFT JOIN user_info b ON b.uid=a.senduser
+			WHERE a.receiveuser =#{receiveuser}  and  isread=0  ORDER BY a.createdate ASC
+	</select>
+
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from user_message 
+	</select>
+
+    <insert id="save" parameterType="com.yff.xim.model.UserMessageEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_message
+		(
+			`senduser`, 
+			`receiveuser`, 
+			`groupid`, 
+			`isread`, 
+			`type`, 
+			`content`, 
+			`createuser`, 
+			`createdate`, 
+			`updatedate`
+		)
+		values
+		(
+			#{senduser}, 
+			#{receiveuser}, 
+			#{groupid}, 
+			#{isread}, 
+			#{type}, 
+			#{content}, 
+			#{createuser}, 
+			#{createdate}, 
+			NOW()
+		)
+	</insert>
+
+    <update id="update" parameterType="com.yff.xim.model.UserMessageEntity">
+        update user_message
+        <set>
+            <if test="senduser != null">`senduser` = #{senduser},</if>
+            <if test="receiveuser != null">`receiveuser` = #{receiveuser},</if>
+            <if test="groupid != null">`groupid` = #{groupid},</if>
+            <if test="isread != null">`isread` = #{isread},</if>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="content != null">`content` = #{content},</if>
+            <if test="createuser != null">`createuser` = #{createuser},</if>
+            <if test="createdate != null">`createdate` = #{createdate},</if>
+            <if test="updatedate != null">`updatedate` = #{updatedate}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updatemsgstate">
+        update user_message
+        <set>
+            isread = 1,
+            updatedate= NOW()
+        </set>
+        where receiveuser = #{receiveuser}
+    </update>
+
+</mapper>

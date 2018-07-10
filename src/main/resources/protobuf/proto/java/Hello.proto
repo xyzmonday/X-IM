@@ -1,0 +1,6 @@
+syntax="proto3";
+package com.yff.xim.model.proto;
+option java_outer_classname="HelloProto";
+message Hello {
+   string message=1;
+}

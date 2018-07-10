@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" shutdownHook="disable" monitorInterval="1800">
+    <Properties>
+        <Property name="sysName">x-im</Property>
+        <Property name="bizLogLevel">INFO</Property>
+        <Property name="otherLogLevel">INFO</Property>
+        <Property name="logFilePath">/data/logs/app/x-im</Property>
+        <Property name="logSize">2048 MB</Property>
+        <Property name="maxFile">100</Property>
+        <Property name="bizLogFile">biz_${sysName}</Property>
+        <Property name="allLogFile">all_${sysName}</Property>
+
+    </Properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="${bizLogLevel}" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8"
+                           pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} ,%X{local_ip}x-im,%X{trace_id} %-5level - %c:%line - %t - %msg%n"/>
+        </Console>
+        <RollingFile name="BizRollingFile" fileName="${logFilePath}/${bizLogFile}.log"
+                     filePattern="${logFilePath}/$${date:yyyy-MM}/${bizLogFile}-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8"
+                           pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} ,%X{local_ip}x-im,%X{trace_id} %-5level - %c:%line - %t - %msg%n"/>
+            <Filters>
+                <ThresholdFilter level="${bizLogLevel}"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${logSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxFile}"/>
+        </RollingFile>
+
+        <RollingFile name="AllRollingFile" fileName="${logFilePath}/${allLogFile}.log"
+                     filePattern="${logFilePath}/$${date:yyyy-MM}/${allLogFile}-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8"
+                           pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} ,%X{local_ip}x-im,%X{trace_id} %-5level - %c:%line - %t - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${logSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxFile}"/>
+        </RollingFile>
+    </appenders>
+    <loggers>
+
+        <logger name="com.yff.xim" level="${bizLogLevel}" additivity="false">
+            <appender-ref ref="BizRollingFile"/>
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <root level="${otherLogLevel}">
+            <appender-ref ref="AllRollingFile"/>
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>

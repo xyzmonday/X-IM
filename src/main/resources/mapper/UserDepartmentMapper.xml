@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yff.xim.module.user.mapper.UserDepartmentMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.yff.xim.model.UserDepartmentEntity" id="userDepartmentMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="count" column="count"/>
+        <result property="level" column="level"/>
+        <result property="parentid" column="parentid"/>
+        <result property="remark" column="remark"/>
+        <result property="createdate" column="createdate"/>
+        <result property="updatedate" column="updatedate"/>
+        <result property="updateuser" column="updateuser"/>
+        <result property="isdel" column="isdel"/>
+    </resultMap>
+    
+   <resultMap type="com.yff.xim.model.ImFriendUserData" id="userFriendMap" >
+   		 <result property="id" column="id"/>
+         <result property="groupname" column="groupname"/>
+   		 <!-- 一对多查询    -->
+         <collection property="list" column="id" select="queryFriendUser"></collection> 
+   </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     count ,  	        
+  	  	     level ,  	        
+  	  	     parentid ,  	        
+  	  	     remark ,  	        
+  	  	     createdate ,  	        
+  	  	     updatedate ,  	        
+  	  	     updateuser ,  	        
+  	  	     isdel   	     
+  </sql>
+
+
+	<select id="queryFriendUser" resultType="com.yff.xim.model.ImFriendUserInfoData">
+		select  uid   as id ,name as username , signature as sign  ,  profilephoto as avatar    from user_info where deptid = #{id}
+	</select>
+	
+	<select id="queryGroupAndUser" resultMap="userFriendMap">
+		select  id,name as groupname  from user_department  
+	</select>
+
+</mapper>

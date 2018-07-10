@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yff.xim.module.user.mapper.UserAccountMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.yff.xim.model.UserAccountEntity" id="userAccountMap">
+        <result property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="disablestate" column="disablestate"/>
+        <result property="isdel" column="isdel"/>
+        <result property="createdate" column="createdate"/>
+        <result property="updatedate" column="updatedate"/>
+        <result property="updateuser" column="updateuser"/>
+    </resultMap>
+
+    <resultMap type="com.yff.xim.model.UserAccountEntity"
+               id="userAccountAndInfoMap" extends="userAccountMap">
+        <!-- 一对一查询 -->
+        <association property="userInfo" column="id"
+                     select="com.yff.xim.module.user.mapper.UserInfoMapper.queryByUid"></association>
+        <!-- 一对多查询    -->
+        <!--   <collection property="*list" column="id" select="*"></collection> -->
+    </resultMap>
+
+    <select id="findUserAccount" resultType="java.util.Map" resultMap="userAccountAndInfoMap">
+        select * from user_account where account = #{username} and password = #{password}
+    </select>
+
+
+	<select id="findByAccount" resultType="java.lang.String" resultMap="userAccountAndInfoMap">
+		select * from user_account where account = #{username}
+	</select>
+
+    <insert id="insert" parameterType="com.yff.xim.model.UserAccountEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_account
+		(
+			`account`,
+			`password`,
+			`disablestate`,
+			`isdel`,
+			`createdate`,
+			`updatedate`,
+			`updateuser`
+		)
+		values
+		(
+			#{account},
+			#{password},
+			#{disablestate},
+			#{isdel},
+			NOW(),
+			NOW(),
+			#{updateuser}
+		)
+	</insert>
+</mapper>

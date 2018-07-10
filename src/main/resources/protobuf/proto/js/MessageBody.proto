@@ -1,0 +1,10 @@
+syntax = "proto3";
+ 
+message MessageBody {
+	 string title = 1; //标题
+	 string content = 2;//内容
+	 string time = 3;//发送时间
+	 uint32 type = 4;//0 文字   1 文件
+	 string extend = 5;//扩展字段
+}
+ 
