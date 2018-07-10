@@ -10,21 +10,21 @@
     <script type="text/javascript" src="../static/js/messagebody.js"></script>
 <body>
 
-<div id="container" class="wrap" style="left: 464px; height: 566px; right: auto;">
-    <!--990宽度时请计算margin-top=（屏幕高度-990px）/2-->
-    <div th:text="'欢迎' + ${user.userInfo.name}" style="magin:30px;"></div>
-</div>
-
 <script src="../static/layui/layui.js"></script>
 <script src="../static/js/websocketconfig.js"></script>
 <script th:inline="javascript">
     var currentsession = [[${user.id}]] + "";
+    var currentUser = [[${user.userInfo.name}]];
     var lm;
 
     //一般直接写在一个js文件中
     layui.use(['layer', 'jquery'], function () {
         var layer = layui.layer
             , $ = layui.jquery;
+        //html加载完毕后
+        $(document).ready(function () {
+            layer.msg("欢迎" + currentUser);
+        });
         //发送消息
         var sendMsg = function (msg, receiver, group) {
             var message = new proto.Model();
@@ -152,8 +152,7 @@
             );
 
             layim.on('online', function (status) {
-                //console.log(status); //获得online或者hide
-                //websocket发送在线或离线消息给好友
+                console.log("status:" + status);
             });
 
             //websocket链接初始化后回调
@@ -188,13 +187,13 @@
                             //上线
                             if (msg.getReceiver() != currentsession) {
                                 layer.msg(username + "上线了！");
-                                layim.setFriendStatus(msg.getSender(), 'online');
+                                layim.setFriendStatus(msg.getReceiver() , 'online');
                             }
                         } else if (msg.getCmd() == 4) {
                             //下线
                             if (msg.getReceiver() != currentsession) {
                                 layer.msg(username + "已下线！");
-                                layim.setFriendStatus(msg.getSender(), 'offline');
+                                layim.setFriendStatus(msg.getReceiver() , 'offline');
                             }
                         } else {
                             //显示非自身消息
