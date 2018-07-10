@@ -6,7 +6,7 @@ springBoot2,websocket,Protobuf,LayIM,thymeleaf 等构建的实时通讯项目.
 开发这可以先通简单的单聊开始，配合doc目录下的**X-IM及时通信项目开发文档-version1.0.docx**
 快速了解X-IM的项目的数据流程。熟悉整个流程后，读者可以根据自己的业务需求快速完成自己的实时通信!<br/>
 
-##技术栈
+## 技术栈
 * springBoot2.0.3
 * netty4.0
 * websocket
